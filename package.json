@@ -1,7 +1,7 @@
 {
   "name": "ellie",
-  "version": "0.0.0",
-  "description": "TBA",
+  "version": "0.1.0",
+  "description": "A simple server framework entirely based on next gen JavaScript",
   "main": "build/server.js",
   "browser": "build/client.js",
   "scripts": {
