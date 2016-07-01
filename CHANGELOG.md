@@ -4,6 +4,8 @@
 * Create the Pipeline
 
 ```javascript
+import { Pipeline } from 'ellie'
+
 const pipeline = new Pipeline([
   SomeMiddleware,
   SomeOtherPipeline,
