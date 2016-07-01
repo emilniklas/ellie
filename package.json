@@ -1,0 +1,23 @@
+{
+  "name": "ellie",
+  "version": "0.0.0",
+  "description": "TBA",
+  "main": "index.js",
+  "scripts": {
+    "test": "eliot test --using mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilniklas/ellie.git"
+  },
+  "author": "Emil Persson <emil.n.persson@gmail.com>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/emilniklas/ellie/issues"
+  },
+  "homepage": "https://github.com/emilniklas/ellie#readme",
+  "devDependencies": {
+    "eliot": "^0.1.21",
+    "mocha": "^2.5.3"
+  }
+}
