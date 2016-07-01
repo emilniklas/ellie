@@ -2,8 +2,10 @@
   "name": "ellie",
   "version": "0.0.0",
   "description": "TBA",
-  "main": "index.js",
+  "main": "build/server.js",
+  "browser": "build/client.js",
   "scripts": {
+    "install": "eliot build",
     "test": "eliot test --using mocha"
   },
   "repository": {
@@ -17,7 +19,12 @@
   },
   "homepage": "https://github.com/emilniklas/ellie#readme",
   "devDependencies": {
-    "eliot": "^0.1.21",
     "mocha": "^2.5.3"
+  },
+  "dependencies": {
+    "eliot": "^0.1.24"
+  },
+  "engines": {
+    "node": ">=6.2.0 <7.0"
   }
 }
