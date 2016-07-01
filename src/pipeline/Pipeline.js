@@ -25,6 +25,9 @@ export default class Pipeline {
   }
 
   _instantiateMiddleware (next, middleware) {
+    if (middleware instanceof Pipeline) {
+      return this._pipelineMiddleware(next, middleware)
+    }
     try {
       return middleware(next)
     } catch (e) {
@@ -32,6 +35,19 @@ export default class Pipeline {
         throw e
       }
       return this._instantiateClassMiddleware(next, middleware)
+    }
+  }
+
+  _pipelineMiddleware (next, pipeline) {
+    return async function (request) {
+      try {
+        return await pipeline.pipe(request)
+      } catch (e) {
+        if (e instanceof NoResponseError) {
+          return next(request)
+        }
+        throw e
+      }
     }
   }
 

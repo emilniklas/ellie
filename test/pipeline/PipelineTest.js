@@ -88,4 +88,13 @@ describe('Pipeline', () => {
     await pipeline.pipe(2).should.eventually.equal('LESS OR EQUAL TO 5')
     await pipeline.pipe(3).should.eventually.equal('GREATER THAN 5')
   })
+
+  it('can be composed in a list of middleware', async function () {
+    const pipeline = new Pipeline([
+      new Pipeline([ (n) => (r) => n(r) ]),
+      new Pipeline([ () => () => 'b' ])
+    ])
+
+    await pipeline.pipe().should.eventually.equal('b')
+  })
 })
