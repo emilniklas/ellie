@@ -38,4 +38,16 @@ describe('Server', () => {
     const response = await server.request('GET', '/')
     response.body.should.equal('Response')
   })
+
+  it('can be decorated with response decorators', async function () {
+    const mockPipeline = {
+      decorate (...decorators) {
+        return { decorators }
+      }
+    }
+
+    const [ server ] = setUpServer(mockPipeline)
+
+    server.decorate(1, 2, 3)._pipeline.decorators.should.deep.equal([1, 2, 3])
+  })
 })

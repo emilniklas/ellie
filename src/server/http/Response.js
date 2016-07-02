@@ -9,5 +9,22 @@ export default class Response {
 
   static ok (body) {
     return new Response(200, body)
+      .header('Content-Type', 'text/html')
+  }
+
+  static json (body, status = 200) {
+    return new Response(status, JSON.stringify(body))
+      .header('Content-Type', 'application/json')
+  }
+
+  header (name, value) {
+    if (value == null) {
+      return this.headers.get(name)
+    }
+    return new Response(
+      this.statusCode,
+      this.body,
+      this.headers.set(name, value)
+    )
   }
 }
