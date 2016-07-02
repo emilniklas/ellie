@@ -1,6 +1,6 @@
 import Pipeline from './Pipeline'
 
 export default function pipe (...middleware) {
-  const pipeline = new Pipeline(middleware)
+  const pipeline = Pipeline.make(middleware)
   return pipeline
 }

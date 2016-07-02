@@ -1,4 +1,10 @@
-# 0.0.1
+# 0.2.0
+* Change the `Pipeline` constructor's role to internal, and
+  introduce the `Pipeline.make` factory.
+* Refactor and provide some inline documentation for the
+  Pipeline module.
+
+# 0.1.0
 * Initialize project
 * Set up build with Eliot
 * Introduce the Pipeline
@@ -6,7 +12,7 @@
 ```javascript
 import { Pipeline } from 'ellie'
 
-const pipeline = new Pipeline([
+const pipeline = Pipeline.make([
   SomeMiddleware,
   SomeOtherPipeline,
   AThirdPipeline
@@ -23,7 +29,7 @@ console.log(response) // "Response"
 import { Pipeline, Server } from 'ellie'
 import { createServer } from 'http'
 
-const pipeline = new Pipeline(...)
+const pipeline = Pipeline.make(...)
 const server = new Server(pipeline, createServer)
 
 server.listen(8080).then(() => {
