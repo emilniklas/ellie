@@ -17,7 +17,7 @@ describe('CompressionMiddleware', () => {
     const request = new Request('GET', '/', headers)
     const response = await middleware(request)
     await response.body.buffer().should.eventually.equal(encoder('x').toString())
-    response.header('Transfer-Encoding').should.equal(encoding)
+    response.header('Content-Encoding').should.equal(encoding)
   }
 
   it('gzip encodes the response body', async function () {

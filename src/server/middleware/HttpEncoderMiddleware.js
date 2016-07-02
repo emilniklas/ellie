@@ -9,7 +9,7 @@ export default class PipeResponseStreamMiddleware extends Middleware {
     const response = await this.next(request)
     return response.changeBody(
       response.body.pipe(this.encoder())
-    ).header('Transfer-Encoding', this.encoding())
+    ).header('Content-Encoding', this.encoding())
   }
 
   canEncode (request) {
