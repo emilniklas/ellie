@@ -18,6 +18,11 @@ const decorated = pipeline
 await decorated.pipe() // HELLO
 ```
 
+* Expand on the Headers class, improve integration in the Server class.
+* Add decorators to server, and introduce a few basic decorators
+  for ensuring that the `next()` function always returns what you'd
+  expect when in a server middleware.
+
 # 0.1.0
 * Initialize project
 * Set up build with Eliot

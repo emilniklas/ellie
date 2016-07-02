@@ -34,7 +34,7 @@ function glue (decorators) {
     // the decorators applied to it.
     return (request) => {
       const nextMiddlewareResponse = middlewareInstance(request)
-      return decorateResponse(nextMiddlewareResponse, decorators)
+      return decorateResponse(nextMiddlewareResponse, decorators, middleware)
     }
   }
 }
@@ -50,10 +50,13 @@ function glue (decorators) {
  *       ...
  *       .then(decoratorN)
  */
-function decorateResponse (response, decorators) {
+function decorateResponse (response, decorators, middleware) {
+  const name = nameMiddleware(middleware)
   const promise = Promise.resolve(response)
   const reducer = (promise, decorator) => promise.then(decorator)
-  return decorators.reduce(reducer, promise)
+  return decorators
+    .map((decorator) => (response) => decorator(response, name))
+    .reduceRight(reducer, promise)
 }
 
 /**
@@ -143,15 +146,19 @@ function instantiateClassMiddleware (next, NextMiddleware) {
   // enforce the existance of a [pipe] method, so we
   // force it.
   if (!(instance instanceof Middleware)) {
-    const name = NextMiddleware.name === ''
-      ? 'Anonymous class middleware'
-      : NextMiddleware.name
+    const name = nameMiddleware(NextMiddleware.name)
     throw new TypeError(`${name} must extend the Middleware class`)
   }
 
   // Bind the instance's pipe method to its own lexical scope,
   // and send it back as the handler for this middleware.
   return instance.pipe.bind(instance)
+}
+
+function nameMiddleware (middleware) {
+  return middleware.name === ''
+    ? 'Anonymous middleware'
+    : middleware.name
 }
 
 export default class Pipeline {

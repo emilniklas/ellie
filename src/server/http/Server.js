@@ -43,8 +43,8 @@ export default class Server {
   }
 
   _writeResponse (response, nativeResponse) {
-    nativeResponse.writeHead(response.statusCode)
     response.headers.forEach(nativeResponse.setHeader.bind(nativeResponse))
+    nativeResponse.writeHead(response.statusCode)
     nativeResponse.end(response.body)
   }
 

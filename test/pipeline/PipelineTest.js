@@ -106,7 +106,7 @@ describe('Pipeline', () => {
         return response
       },
       () => (request) => request
-    ]).decorate(String, (r) => r.replace('3', '4'))
+    ]).decorate((r) => r.replace('3', '4'), String)
 
     await pipeline.pipe(123)
   })
