@@ -35,8 +35,8 @@ export default class Headers {
   _formatName (name) {
     const upperCase = (s) => s.toUpperCase()
     return name
-      .replace(/-\w/, upperCase)
-      .replace(/^\w/, upperCase)
+      .replace(/-\w/g, upperCase)
+      .replace(/^\w/g, upperCase)
   }
 
   toString () {
@@ -46,7 +46,7 @@ export default class Headers {
   }
 
   inspect () {
-    return 'Headers {\n  ' + this.toString().replace(/\n/, '\n  ') + '\n}'
+    return 'Headers {\n  ' + this.toString().replace(/\n/g, '\n  ') + '\n}'
   }
 
   clear (name) {

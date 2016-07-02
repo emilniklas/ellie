@@ -1,5 +1,6 @@
 import Request from './Request'
 import Response from './Response'
+import Headers from './Headers'
 import NoResponseError from '../../pipeline/NoResponseError'
 
 export default class Server {
@@ -39,7 +40,13 @@ export default class Server {
   }
 
   _parseRequest (nativeRequest) {
-    return new Request(nativeRequest.method, nativeRequest.url)
+    const headers = Object.keys(nativeRequest.headers)
+      .map((name) => [ name, nativeRequest.headers[name] ])
+      .reduce(
+        (headers, [name, value]) => headers.set(name, value),
+        new Headers()
+      )
+    return new Request(nativeRequest.method, nativeRequest.url, headers)
   }
 
   _writeResponse (response, nativeResponse) {
