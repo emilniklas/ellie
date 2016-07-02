@@ -6,6 +6,7 @@ export default class Server {
   constructor (pipeline, listenerFactory) {
     this._pipeline = pipeline
     this._handler = this._handler.bind(this)
+    this._listenerFactory = listenerFactory
     this._listener = listenerFactory(this._handler)
   }
 
@@ -13,6 +14,13 @@ export default class Server {
     return new Promise((resolve) => {
       this._listener.listen(port, hostname, resolve)
     })
+  }
+
+  decorate (...decorators) {
+    return new Server(
+      this._pipeline.decorate(...decorators),
+      this._listenerFactory
+    )
   }
 
   request (method, url) {
@@ -35,8 +43,8 @@ export default class Server {
   }
 
   _writeResponse (response, nativeResponse) {
-    nativeResponse.writeHead(response.statusCode)
     response.headers.forEach(nativeResponse.setHeader.bind(nativeResponse))
+    nativeResponse.writeHead(response.statusCode)
     nativeResponse.end(response.body)
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "ellie",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple server framework entirely based on next gen JavaScript",
   "main": "build/server.js",
   "browser": "build/client.js",
@@ -27,7 +27,9 @@
     "standard": "^7.1.2"
   },
   "dependencies": {
-    "eliot": "^0.1.26"
+    "eliot": "^0.1.26",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0"
   },
   "engines": {
     "node": ">=6.2.0 <7.0"

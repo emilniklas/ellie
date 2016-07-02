@@ -1,4 +1,31 @@
-# 0.0.1
+# 0.2.0
+* Change the `Pipeline` constructor's role to internal, and
+  introduce the `Pipeline.make` factory.
+* Refactor and provide some inline documentation for the
+  Pipeline module.
+* Introduce decorators on the Pipeline.
+
+```javascript
+const pipeline = pipe(
+  () => () => 'hello'
+)
+
+await pipeline.pipe() // hello
+
+const decorated = pipeline
+  .decorate(w => w.toUpperCase())
+
+await decorated.pipe() // HELLO
+```
+
+* Expand on the Headers class, improve integration in the Server class.
+* Add decorators to server, and introduce a few basic decorators
+  for ensuring that the `next()` function always returns what you'd
+  expect when in a server middleware.
+* Add JSX support.
+* Update the example to use JSX.
+
+# 0.1.0
 * Initialize project
 * Set up build with Eliot
 * Introduce the Pipeline
@@ -6,7 +33,7 @@
 ```javascript
 import { Pipeline } from 'ellie'
 
-const pipeline = new Pipeline([
+const pipeline = Pipeline.make([
   SomeMiddleware,
   SomeOtherPipeline,
   AThirdPipeline
@@ -23,7 +50,7 @@ console.log(response) // "Response"
 import { Pipeline, Server } from 'ellie'
 import { createServer } from 'http'
 
-const pipeline = new Pipeline(...)
+const pipeline = Pipeline.make(...)
 const server = new Server(pipeline, createServer)
 
 server.listen(8080).then(() => {

@@ -2,6 +2,7 @@ import { Target } from 'eliot/config'
 
 export default {
   library: true,
+  jsx: true,
 
   targets: [{
     target: Target.NODE6,

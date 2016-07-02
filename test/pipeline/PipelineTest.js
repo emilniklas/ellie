@@ -6,7 +6,7 @@ import NoResponseError from 'ellie/src/pipeline/NoResponseError'
 
 describe('Pipeline', () => {
   describe('with no middleware', () => {
-    const pipeline = new Pipeline([])
+    const pipeline = Pipeline.make([])
 
     it('throws an error', async function () {
       await pipeline.pipe()
@@ -15,7 +15,7 @@ describe('Pipeline', () => {
   })
 
   describe('with one middleware that does not return a response', () => {
-    const pipeline = new Pipeline([
+    const pipeline = Pipeline.make([
       (next) => () => next()
     ])
 
@@ -26,7 +26,7 @@ describe('Pipeline', () => {
   })
 
   describe('with one middleware that does return a response', () => {
-    const pipeline = new Pipeline([
+    const pipeline = Pipeline.make([
       () => () => 'response'
     ])
 
@@ -38,20 +38,20 @@ describe('Pipeline', () => {
 
   describe("with a class style middleware that doesn't extend Middleware", () => {
     it('throws an error', () => {
-      ;(() => new Pipeline([ class {} ]))
+      ;(() => Pipeline.make([ class {} ]))
         .should.throw(TypeError)
     })
   })
 
   describe('with a class style middleware that does extend Middleware', () => {
     it('does not throw an error', () => {
-      ;(() => new Pipeline([ class extends Middleware {} ]))
+      ;(() => Pipeline.make([ class extends Middleware {} ]))
         .should.not.throw(TypeError)
     })
   })
 
   describe('with a pipeline', () => {
-    const pipeline = new Pipeline([
+    const pipeline = Pipeline.make([
       (next) => (request) => next(request),
       class extends Middleware {},
       () => (request) => request
@@ -79,7 +79,7 @@ describe('Pipeline', () => {
         ? 'greater than 5'
         : 'less or equal to 5'
 
-    const pipeline = new Pipeline([
+    const pipeline = Pipeline.make([
       squareRequestMiddleware,
       UppercaseResponseMiddleware,
       responseMiddleware
@@ -87,5 +87,27 @@ describe('Pipeline', () => {
 
     await pipeline.pipe(2).should.eventually.equal('LESS OR EQUAL TO 5')
     await pipeline.pipe(3).should.eventually.equal('GREATER THAN 5')
+  })
+
+  it('can be composed in a list of middleware', async function () {
+    const pipeline = Pipeline.make([
+      Pipeline.make([ (n) => (r) => n(r) ]),
+      Pipeline.make([ () => () => 'b' ])
+    ])
+
+    await pipeline.pipe().should.eventually.equal('b')
+  })
+
+  it('can be passed decorators that decorate the responses from middleware', async function () {
+    const pipeline = Pipeline.make([
+      (next) => async function (request) {
+        const response = await next(request)
+        response.should.equal('124')
+        return response
+      },
+      () => (request) => request
+    ]).decorate((r) => r.replace('3', '4'), String)
+
+    await pipeline.pipe(123)
   })
 })
