@@ -1,10 +1,11 @@
 import Headers from './Headers'
 import ContentType from './ContentType'
+import ResponseBody from './ResponseBody'
 
 export default class Response {
   constructor (statusCode, body, headers) {
     this.statusCode = statusCode
-    this.body = body
+    this.body = new ResponseBody(body)
     this.headers = headers || new Headers()
   }
 
@@ -40,6 +41,14 @@ export default class Response {
     return new Response(
       code,
       this.body,
+      this.headers
+    )
+  }
+
+  changeBody (body) {
+    return new Response(
+      this.statusCode,
+      body,
       this.headers
     )
   }

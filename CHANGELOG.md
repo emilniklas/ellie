@@ -1,3 +1,6 @@
+# 0.2.1
+* Bug fixes
+
 # 0.2.0
 * Change the `Pipeline` constructor's role to internal, and
   introduce the `Pipeline.make` factory.
@@ -24,6 +27,16 @@ await decorated.pipe() // HELLO
   expect when in a server middleware.
 * Add JSX support.
 * Update the example to use JSX.
+* Add compression middleware (opt-in)
+
+```javascript
+import { pipe, middleware } from 'ellie'
+
+const pipeline = pipe(
+  middleware.CompressionMiddleware,
+  MyOtherMiddleware
+)
+```
 
 # 0.1.0
 * Initialize project
