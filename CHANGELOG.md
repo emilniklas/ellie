@@ -3,6 +3,20 @@
   introduce the `Pipeline.make` factory.
 * Refactor and provide some inline documentation for the
   Pipeline module.
+* Introduce decorators on the Pipeline.
+
+```javascript
+const pipeline = pipe(
+  () => () => 'hello'
+)
+
+await pipeline.pipe() // hello
+
+const decorated = pipeline
+  .decorate(w => w.toUpperCase())
+
+await decorated.pipe() // HELLO
+```
 
 # 0.1.0
 * Initialize project
