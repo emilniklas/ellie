@@ -14,7 +14,7 @@ describe('toStringDecorator', () => {
   })
 
   const assertJSONResponse = (response, body) => {
-    response.headers.get('Content-Type').should.equal('application/json')
+    response.headers.get('Content-Type').should.equal('application/json; charset=utf-8')
     response.body.should.equal(body)
   }
 

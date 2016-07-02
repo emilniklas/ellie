@@ -47,6 +47,15 @@ describe('Headers', () => {
         .set('header', 'a')
         .get('header').should.equal('a, b')
     })
+
+    it('allows for passing objects as values', () => {
+      const headers = new Headers()
+        .set('header', {})
+        .set('header2', { toString: () => 'value' })
+
+      headers.get('header').should.equal('[object Object]')
+      headers.get('header2').should.equal('value')
+    })
   })
 
   describe('#forEach', () => {
