@@ -45,6 +45,14 @@ export default class Response {
     )
   }
 
+  changeBody (body) {
+    return new Response(
+      this.statusCode,
+      body,
+      this.headers
+    )
+  }
+
   header (name, value) {
     if (value == null) {
       return this.headers.get(name)
