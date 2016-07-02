@@ -1,3 +1,6 @@
+# 0.2.1
+* Bug fixes
+
 # 0.2.0
 * Change the `Pipeline` constructor's role to internal, and
   introduce the `Pipeline.make` factory.
