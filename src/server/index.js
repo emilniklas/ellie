@@ -8,6 +8,8 @@ import Response from './http/Response'
 import Headers from './http/Headers'
 import serve from './http/serve'
 
+import * as errors from './http/errors'
+
 export {
   Pipeline,
   Middleware,
@@ -17,5 +19,7 @@ export {
   Request,
   Response,
   Headers,
-  serve
+  serve,
+
+  errors
 }
