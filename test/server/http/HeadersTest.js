@@ -94,4 +94,16 @@ describe('Headers', () => {
         ].join('\n'))
     })
   })
+
+  describe('#clear', () => {
+    it('clears all headers of a specific name', () => {
+      new Headers()
+        .set('content-type', 'a')
+        .set('Content-Type', 'b')
+        .clear('CONTENT-TYPE')
+        .set('conTenT-Type', 'c')
+        .get('coNteNt-type')
+        .should.equal('c')
+    })
+  })
 })

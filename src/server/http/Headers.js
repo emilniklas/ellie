@@ -48,4 +48,11 @@ export default class Headers {
   inspect () {
     return 'Headers {\n  ' + this.toString().replace(/\n/, '\n  ') + '\n}'
   }
+
+  clear (name) {
+    const headerName = name.toLowerCase()
+    return new Headers(
+      this._raw.filter(([name]) => name !== headerName)
+    )
+  }
 }
