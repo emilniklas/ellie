@@ -86,8 +86,14 @@ function instantiateMiddleware (next, middleware) {
   try {
     return middleware(next)
   } catch (e) {
-    // If the error isn't a [TypeError], we should rethrow it
-    if (!(e instanceof TypeError)) {
+    // If the error isn't a [TypeError] warning about class constructor
+    // not being invoked with 'new', we should rethrow it
+    if (!(
+      e instanceof TypeError && (
+        /Class constructor .* cannot be invoked without 'new'/.test(e.message) ||
+        /Cannot call a class as a function/.test(e.message)
+      )
+    )) {
       throw e
     }
 
