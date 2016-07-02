@@ -22,6 +22,8 @@ await decorated.pipe() // HELLO
 * Add decorators to server, and introduce a few basic decorators
   for ensuring that the `next()` function always returns what you'd
   expect when in a server middleware.
+* Add JSX support.
+* Update the example to use JSX.
 
 # 0.1.0
 * Initialize project
