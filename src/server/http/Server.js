@@ -52,7 +52,7 @@ export default class Server {
   _writeResponse (response, nativeResponse) {
     response.headers.forEach(nativeResponse.setHeader.bind(nativeResponse))
     nativeResponse.writeHead(response.statusCode)
-    nativeResponse.end(response.body)
+    response.body.pipe(nativeResponse)
   }
 
   _errorResponse (error) {

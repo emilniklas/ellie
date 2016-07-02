@@ -8,14 +8,14 @@ describe('toStringDecorator', () => {
     toStringDecorator(response).should.equal(response)
   })
 
-  it('converts other types to basic string responses', () => {
-    toStringDecorator('hello').body.should.equal('hello')
-    toStringDecorator(123).body.should.equal('123')
+  it('converts other types to basic string responses', async function () {
+    await toStringDecorator('hello').body.buffer().should.eventually.equal('hello')
+    await toStringDecorator(123).body.buffer().should.eventually.equal('123')
   })
 
-  const assertJSONResponse = (response, body) => {
+  const assertJSONResponse = async function (response, body) {
     response.headers.get('Content-Type').should.equal('application/json; charset=utf-8')
-    response.body.should.equal(body)
+    await response.body.buffer().should.eventually.equal(body)
   }
 
   it('converts objects and arrays to JSON', () => {

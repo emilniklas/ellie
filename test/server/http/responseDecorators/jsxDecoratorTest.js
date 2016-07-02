@@ -18,26 +18,26 @@ describe('jsxDecorator', () => {
     '</html>'
   ].join('')
 
-  it('transforms JSX into a response', () => {
-    jsxDecorator(
+  it('transforms JSX into a response', async function () {
+    await jsxDecorator(
       <html>
         <head />
         <body>
           <div>Hello World</div>
         </body>
       </html>
-    ).body.should.equal(helloWorldBody)
+    ).body.buffer().should.eventually.equal(helloWorldBody)
   })
 
-  it('always adds the root html tags', () => {
-    jsxDecorator(
+  it('always adds the root html tags', async function () {
+    await jsxDecorator(
       <body>
         <div>Hello World</div>
       </body>
-    ).body.should.equal(helloWorldBody)
+    ).body.buffer().should.eventually.equal(helloWorldBody)
 
-    jsxDecorator(
+    await jsxDecorator(
       <div>Hello World</div>
-    ).body.should.equal(helloWorldBody)
+    ).body.buffer().should.eventually.equal(helloWorldBody)
   })
 })

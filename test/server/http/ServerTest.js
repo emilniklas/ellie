@@ -36,7 +36,7 @@ describe('Server', () => {
     mockListener.hostname.should.equal('0.0.0.0')
 
     const response = await server.request('GET', '/')
-    response.body.should.equal('Response')
+    await response.body.buffer().should.eventually.equal('Response')
   })
 
   it('can be decorated with response decorators', async function () {
