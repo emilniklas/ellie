@@ -75,9 +75,9 @@ async function end () {
  */
 function instantiateMiddleware (next, middleware) {
   // If the middleware is a nested pipeline, we
-  // create a fork in the pipeline.
+  // insert the new pipeline into this one.
   if (middleware instanceof Pipeline) {
-    return fork(next, middleware)
+    return middleware.then(next).pipe
   }
 
   // First, we assume that the middleware is a function style
@@ -100,30 +100,6 @@ function instantiateMiddleware (next, middleware) {
     // At this point, we can assume that the middleware is a
     // class, so we instantiate it.
     return instantiateClassMiddleware(next, middleware)
-  }
-}
-
-/**
- * The "pipeline middleware" runs the request through
- * the new pipeline. If the new one doesn't provide
- * a response, we keep going in the original pipeline.
- */
-function fork (next, pipeline) {
-  return async function (request) {
-    try {
-      // Send the request through the fork
-      return await pipeline.pipe(request)
-    } catch (e) {
-      // If an error is thrown that isn't a [NoResponseError],
-      // we should rethrow it.
-      if (!(e instanceof NoResponseError)) {
-        throw e
-      }
-
-      // Elsewise, try passing the request on through its
-      // original pipeline.
-      return next(request)
-    }
   }
 }
 
@@ -172,6 +148,8 @@ export default class Pipeline {
     this._middleware = middleware
     this._pipeline = pipeline
     this._decorators = decorators
+
+    this.pipe = this.pipe.bind(this)
   }
 
   static make (middleware, decorators = []) {
@@ -190,6 +168,20 @@ export default class Pipeline {
     return Pipeline.make(
       this._middleware,
       this._decorators.concat(decorators)
+    )
+  }
+
+  join (pipeline) {
+    return Pipeline.make(
+      this._middleware.concat(pipeline._middleware),
+      this._decorators.concat(pipeline._decorators)
+    )
+  }
+
+  then (next) {
+    return Pipeline.make(
+      this._middleware.concat(() => next),
+      this._decorators
     )
   }
 }

@@ -91,11 +91,11 @@ describe('Pipeline', () => {
 
   it('can be composed in a list of middleware', async function () {
     const pipeline = Pipeline.make([
-      Pipeline.make([ (n) => (r) => n(r) ]),
+      Pipeline.make([ (n) => (r) => n(r).then((res) => res + '!') ]),
       Pipeline.make([ () => () => 'b' ])
     ])
 
-    await pipeline.pipe().should.eventually.equal('b')
+    await pipeline.pipe().should.eventually.equal('b!')
   })
 
   it('can be passed decorators that decorate the responses from middleware', async function () {
@@ -109,5 +109,33 @@ describe('Pipeline', () => {
     ]).decorate((r) => r.replace('3', '4'), String)
 
     await pipeline.pipe(123)
+  })
+
+  it('can be connected to another pipeline', async function () {
+    const a = Pipeline.make([
+      (next) => (request) => next(request)
+        .then((response) => response.toUpperCase())
+    ])
+
+    const b = Pipeline.make([
+      () => (request) => request + '!'
+    ])
+
+    const c = a.join(b)
+
+    await c.pipe('hello').should.eventually.equal('HELLO!')
+  })
+
+  it('can be attached to an active middleware', async function () {
+    const pipeline = Pipeline.make([
+      (next) => (request) => next(request)
+        .then((response) => response.toUpperCase())
+    ])
+
+    const next = (request) => Promise.resolve(request + '!')
+
+    const attached = pipeline.then(next)
+
+    await attached.pipe('hello').should.eventually.equal('HELLO!')
   })
 })
