@@ -12,6 +12,7 @@ import serve from './http/serve'
 
 import * as errors from './http/errors'
 import * as middleware from './middleware'
+import basicMiddleware from './middleware'
 
 export {
   Pipeline,
@@ -27,5 +28,6 @@ export {
   serve,
 
   errors,
-  middleware
+  middleware,
+  basicMiddleware
 }

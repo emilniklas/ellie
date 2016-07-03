@@ -80,6 +80,24 @@ function instantiateMiddleware (next, middleware) {
     return middleware.then(next).pipe
   }
 
+  // If the middleware is a list, take its values and
+  // insert a pipeline created from them.
+  if (Array.isArray(middleware)) {
+    return instantiateMiddleware(
+      next,
+      Pipeline.make(middleware)
+    )
+  }
+
+  // If the middleware is an object, take its values and
+  // insert a pipeline created from them.
+  if (typeof middleware === 'object') {
+    return instantiateMiddleware(
+      next,
+      Object.keys(middleware).map((name) => middleware[name])
+    )
+  }
+
   // First, we assume that the middleware is a function style
   // middleware. If running it as a function throws a [TypeError]
   // it is probably a class style middleware.

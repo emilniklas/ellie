@@ -138,4 +138,18 @@ describe('Pipeline', () => {
 
     await attached.pipe('hello').should.eventually.equal('HELLO!')
   })
+
+  it('can be created from lists and objects', async function () {
+    const a = (next) => (request) => next(request + 1)
+    const b = (next) => (request) => next(request + 1)
+    const c = (next) => (request) => next(request + 1)
+    const d = (next) => (request) => request + 1
+
+    const obj = {a, b}
+    const list = [c, d]
+
+    const pipeline = Pipeline.make([obj, list])
+
+    await pipeline.pipe(0).should.eventually.equal(4)
+  })
 })

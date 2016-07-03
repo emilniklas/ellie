@@ -1,3 +1,21 @@
+# 0.3.0
+* `serve` can now take middleware directly.
+* A new `basicMiddleware` list is now exported from the package, allowing
+  for quick access to the basic catch-all middleware that you'll probably
+  always want.
+
+```javascript
+import { serve, basicMiddleware } from 'ellie'
+
+serve(
+  basicMiddleware,
+  () => () => 'Hello! I'm compressed!'
+)
+.listen(8080)
+.then(() => console.log('Listening to 8080'))
+
+```
+
 # 0.2.1
 * Bug fixes
 

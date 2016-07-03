@@ -9,3 +9,7 @@ export {
   GzipMiddleware,
   HttpEncoderMiddleware
 }
+
+export default [
+  CompressionMiddleware
+]
