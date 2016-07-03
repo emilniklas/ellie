@@ -18,17 +18,16 @@ Simple API
 ```javascript
 // index.js
 
-import { pipe, serve } from 'ellie'
+import { serve } from 'ellie'
 
-const HelloWorld = () => (request) => {
-  return (
-    <h1>Hello world, from {request.url}!</h1>
-  )
-}
+const HelloWorld = () => (request) => (
+  <div>
+    <h1>Hello World</h1>
+    <pre>{request.method} {request.url}</pre>
+  </div>
+)
 
-const pipeline = pipe(HelloWorld)
-
-serve(pipeline)
+serve(HelloWorld)
   .listen(8080)
   .then(() => console.log('Listening to port 8080'))
 ```
