@@ -27,7 +27,7 @@
     "standard": "^7.1.2"
   },
   "dependencies": {
-    "eliot": "^0.1.29",
+    "eliot": "^0.1.31",
     "react": "^15.2.0",
     "react-dom": "^15.2.0"
   },
