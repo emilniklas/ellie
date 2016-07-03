@@ -13,7 +13,24 @@ serve(
 )
 .listen(8080)
 .then(() => console.log('Listening to 8080'))
+```
 
+* Introduce isomorphic Views:
+
+```javascript
+// Server side
+import { View } from 'ellie'
+
+pipe(
+  () => () => (<View component={IsomorphicReactComponent} propThatWillBePassedToComponent />)
+)
+```
+
+```javascript
+// Client side
+import { View } from 'ellie'
+
+View(IsomorphicReactComponent).mount()
 ```
 
 # 0.2.1

@@ -13,6 +13,8 @@ import serve from './http/serve'
 import * as errors from './http/errors'
 import basicMiddleware, * as middleware from './middleware'
 
+import View from '../view/server'
+
 export {
   Pipeline,
   Middleware,
@@ -28,5 +30,7 @@ export {
 
   errors,
   middleware,
-  basicMiddleware
+  basicMiddleware,
+
+  View
 }

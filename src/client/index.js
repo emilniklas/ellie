@@ -1,1 +1,3 @@
-throw new Error('TBA')
+import View from '../view/client'
+
+export { View }
