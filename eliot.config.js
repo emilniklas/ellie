@@ -9,7 +9,7 @@ export default {
     entry: 'src/server/index.js',
     output: 'build/server.js'
   }, {
-    target: Target.ES5,
+    target: Target.NODE6,
     entry: 'src/client/index.js',
     output: 'build/client.js'
   }]
