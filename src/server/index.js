@@ -11,8 +11,7 @@ import ResponseBody from './http/ResponseBody'
 import serve from './http/serve'
 
 import * as errors from './http/errors'
-import * as middleware from './middleware'
-import basicMiddleware from './middleware'
+import basicMiddleware, * as middleware from './middleware'
 
 export {
   Pipeline,
