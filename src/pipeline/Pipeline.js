@@ -27,7 +27,7 @@ function glue (decorators) {
   return (next, middleware) => {
     // Create the middleware, passing in the next, previously
     // normalized, middleware into the constructor/function.
-    const middlewareInstance = instantiateMiddleware(next, middleware)
+    const middlewareInstance = instantiateMiddleware(next, middleware, decorators)
 
     // This function will be passed into the preceding middleware,
     // as the [next] function. It should always be a Promise, with
@@ -73,11 +73,11 @@ async function end () {
  * each one, passing in the next one into its constructor or
  * outer function.
  */
-function instantiateMiddleware (next, middleware) {
+function instantiateMiddleware (next, middleware, decorators) {
   // If the middleware is a nested pipeline, we
   // insert the new pipeline into this one.
   if (middleware instanceof Pipeline) {
-    return middleware.then(next).pipe
+    return middleware.decorate(decorators).then(next).pipe
   }
 
   // If the middleware is a list, take its values and
