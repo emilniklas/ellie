@@ -1,7 +1,7 @@
 import { Target } from 'eliot/config'
 
 export default {
-  library: true,
+  library: 'Ellie',
   jsx: true,
 
   targets: [{
@@ -9,7 +9,7 @@ export default {
     entry: 'src/server/index.js',
     output: 'build/server.js'
   }, {
-    target: Target.NODE6,
+    target: Target.ES5,
     entry: 'src/client/index.js',
     output: 'build/client.js'
   }]
