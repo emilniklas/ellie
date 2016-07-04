@@ -73,11 +73,11 @@ async function end () {
  * each one, passing in the next one into its constructor or
  * outer function.
  */
-function instantiateMiddleware (next, middleware, decorators) {
+function instantiateMiddleware (next, middleware, decorators = []) {
   // If the middleware is a nested pipeline, we
   // insert the new pipeline into this one.
   if (middleware instanceof Pipeline) {
-    return middleware.decorate(decorators).then(next).pipe
+    return middleware.decorate(...decorators).then(next).pipe
   }
 
   // If the middleware is a list, take its values and
