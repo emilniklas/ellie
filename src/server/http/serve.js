@@ -4,7 +4,7 @@ import decorators from './responseDecorators'
 import pipe from '../../pipeline/pipe'
 
 export default function serve (...middleware) {
-  const pipeline = pipe(middleware)
+  const pipeline = pipe(...middleware)
   return new Server(pipeline, createServer)
     .decorate(...decorators)
 }
