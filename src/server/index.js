@@ -10,6 +10,8 @@ import ContentType from './http/ContentType'
 import ResponseBody from './http/ResponseBody'
 import serve from './http/serve'
 
+import Route from './routing/Route'
+
 import * as errors from './http/errors'
 import basicMiddleware, * as middleware from './middleware'
 
@@ -27,6 +29,8 @@ export {
   ContentType,
   ResponseBody,
   serve,
+
+  Route,
 
   errors,
   middleware,
