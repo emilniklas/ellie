@@ -29,6 +29,14 @@ function glue (decorators) {
     // normalized, middleware into the constructor/function.
     const middlewareInstance = instantiateMiddleware(next, middleware, decorators)
 
+    // We want to pass some metadata along with the "next" middleware.
+    // But we don't want to pollute the actual middleware with excess
+    // properties, so we wrap it all in a new function
+    const realMiddleware = (request) => middlewareInstance(request)
+
+    // We add some metadata to the middleware
+    realMiddleware.__decorators = decorators
+
     // This function will be passed into the preceding middleware,
     // as the [next] function. It should always be a Promise, with
     // the decorators applied to it.
@@ -161,6 +169,8 @@ function nameMiddleware (middleware) {
     : middleware.name
 }
 
+const unique = (item, index, array) => array.indexOf(item) === index
+
 export default class Pipeline {
   constructor (middleware, pipeline, decorators = []) {
     this._middleware = middleware
@@ -185,14 +195,14 @@ export default class Pipeline {
   decorate (...decorators) {
     return Pipeline.make(
       this._middleware,
-      this._decorators.concat(decorators)
+      this._decorators.concat(decorators).filter(unique)
     )
   }
 
   join (pipeline) {
     return Pipeline.make(
       this._middleware.concat(pipeline._middleware),
-      this._decorators.concat(pipeline._decorators)
+      this._decorators.concat(pipeline._decorators).filter(unique)
     )
   }
 

@@ -152,4 +152,31 @@ describe('Pipeline', () => {
 
     await pipeline.pipe(0).should.eventually.equal(4)
   })
+
+  describe('with a nested pipeline', () => {
+    it('inherits the decorators', async function () {
+      const decoratorA = (r) => `${r} > dA`
+      const decoratorB = (r) => `${r} > dB`
+      const middlewareA = (n) => (r) => n(r).then((r) => `mA(${r})`)
+      const middlewareB = (n) => (r) => n(r).then((r) => `mB(${r})`)
+      const end = () => (r) => `end(${r})`
+
+      const pipelineA = Pipeline.make(
+        [middlewareA, end],
+        [decoratorA]
+      )
+      const pipelineB = Pipeline.make(
+        [middlewareB, end],
+        [decoratorB, decoratorA]
+      )
+      const pipelineC = Pipeline.make(
+        [middlewareA, pipelineB, end],
+        [decoratorA]
+      )
+
+      await pipelineA.pipe('x').should.eventually.equal('mA(end(x) > dA) > dA')
+      await pipelineB.pipe('x').should.eventually.equal('mB(end(x) > dA > dB) > dA > dB')
+      await pipelineC.pipe('x').should.eventually.equal('mA(mB(end(x) > dA > dB) > dA > dB > dA) > dA')
+    })
+  })
 })

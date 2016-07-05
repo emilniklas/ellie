@@ -2,11 +2,11 @@ import HttpEncoderMiddleware from './HttpEncoderMiddleware'
 import { createDeflate } from 'zlib'
 
 export default class DeflateMiddleware extends HttpEncoderMiddleware {
-  encoding () {
+  static encoding () {
     return 'deflate'
   }
 
-  encoder () {
+  static encoder () {
     return createDeflate()
   }
 }

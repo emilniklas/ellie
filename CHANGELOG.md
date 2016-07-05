@@ -33,6 +33,23 @@ import { View } from 'ellie'
 View(IsomorphicReactComponent).mount()
 ```
 
+* Add `embed` method on the Middleware class. It takes a list of middleware, and creates a new
+  pipeline that starts with the middleware passed in, and then feeds into the next function
+  of the current middleware.
+
+```javascript
+class AddsMiddlewareOnConditionMiddleware extends Middleware {
+  pipe (request) {
+    if (someCondition) {
+      return this
+        .embed(SomeOtherMiddleware, SomeThirdMiddleware)
+        .pipe(request)
+    }
+    return this.next(request)
+  }
+}
+```
+
 # 0.2.1
 * Bug fixes
 

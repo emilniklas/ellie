@@ -2,11 +2,11 @@ import HttpEncoderMiddleware from './HttpEncoderMiddleware'
 import { createGzip } from 'zlib'
 
 export default class GzipMiddleware extends HttpEncoderMiddleware {
-  encoding () {
+  static encoding () {
     return 'gzip'
   }
 
-  encoder () {
+  static encoder () {
     return createGzip()
   }
 }
