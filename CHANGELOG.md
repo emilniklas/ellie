@@ -50,6 +50,51 @@ class AddsMiddlewareOnConditionMiddleware extends Middleware {
 }
 ```
 
+* Add a transparent immutable key/value store on Requests and Responses
+
+```javascript
+const a = new Request('GET', '/')
+console.log(a.thing) // undefined
+
+const b = a.set('thing', 'value')
+console.log(b.thing) // 'value'
+
+const c = b.unset('thing')
+console.log(c.thing) // undefined
+```
+
+* Add routing
+
+```javascript
+pipe(
+  // Basic pages
+  Route.get('/', () => () => 'This is the home screen'),
+  Route.get('about', () => () => 'This is the about page'),
+
+  // Methods
+  Route.post('form', () => () => 'You posted a form'),
+
+  // Nested routes and rest pattern
+  Route.all('admin/...',
+    Route.get('/', () => () => 'This is the admin screen'),
+    Route.update('profile', () => () => 'Updating the profile')
+  ),
+
+  // Route parameters
+  Route.get('pages/:id', () => (request) => `Page no. ${request.params.id}`),
+
+  // Optional parameters
+  Route.get('search/:term?', () => (request) => {
+    const term = request.params.term || 'default'
+
+    return `Searching for ${term}`
+  }),
+
+  // Optional trails
+  Route.get('pages/index?' () => () => 'All pages')
+)
+```
+
 # 0.2.1
 * Bug fixes
 

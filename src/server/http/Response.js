@@ -1,12 +1,25 @@
-import Headers from './Headers'
+import HttpMessage from './HttpMessage'
 import ContentType from './ContentType'
 import ResponseBody from './ResponseBody'
 
-export default class Response {
+export default class Response extends HttpMessage {
   constructor (statusCode, body, headers) {
+    super(headers)
+
     this.statusCode = statusCode
     this.body = new ResponseBody(body)
-    this.headers = headers || new Headers()
+  }
+
+  _copy () {
+    return new Response(
+      this.statusCode,
+      this.body,
+      this.headers
+    )
+  }
+
+  get _protected () {
+    return super._protected.concat('statusCode', 'body')
   }
 
   static ok (body) {
