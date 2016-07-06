@@ -2,14 +2,17 @@ import CompressionMiddleware from './CompressionMiddleware'
 import DeflateMiddleware from './DeflateMiddleware'
 import GzipMiddleware from './GzipMiddleware'
 import HttpEncoderMiddleware from './HttpEncoderMiddleware'
+import LoggerMiddleware from './LoggerMiddleware'
 
 export {
   CompressionMiddleware,
   DeflateMiddleware,
   GzipMiddleware,
-  HttpEncoderMiddleware
+  HttpEncoderMiddleware,
+  LoggerMiddleware
 }
 
 export default [
+  LoggerMiddleware,
   CompressionMiddleware
 ]

@@ -95,6 +95,8 @@ pipe(
 )
 ```
 
+* Add LoggerMiddleware to the basic middleware
+
 # 0.2.1
 * Bug fixes
 
