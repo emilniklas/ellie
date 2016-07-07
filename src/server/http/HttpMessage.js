@@ -16,6 +16,7 @@ export default class HttpMessage {
     }
     const copy = this._copy()
     Object.assign(copy, this._store)
+    Object.assign(copy._store, this._store)
     copy._store[key] = value
     copy[key] = value
     return copy

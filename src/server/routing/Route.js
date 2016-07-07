@@ -1,5 +1,6 @@
 import Middleware from '../../pipeline/Middleware'
 import RouteValidator from './RouteValidator'
+import { parse } from 'url'
 
 export default class Route extends Middleware {
   constructor (next, method, url, middleware) {
@@ -14,7 +15,7 @@ export default class Route extends Middleware {
   }
 
   pipe (request) {
-    const path = request._path == null ? request.url : request._path
+    const path = request._path == null ? parse(request.url).pathname : request._path
     if (this._validator.validate(request.method, path)) {
       return this.pipeline.pipe(
         request

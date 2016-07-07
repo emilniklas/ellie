@@ -2,6 +2,7 @@ import Request from './Request'
 import Response from './Response'
 import Headers from './Headers'
 import NoResponseError from '../../pipeline/NoResponseError'
+import RequestBodyParser from './requestBody/RequestBodyParser'
 
 export default class Server {
   constructor (pipeline, listenerFactory) {
@@ -9,6 +10,7 @@ export default class Server {
     this._handler = this._handler.bind(this)
     this._listenerFactory = listenerFactory
     this._listener = listenerFactory(this._handler)
+    this._requestBodyParser = new RequestBodyParser()
   }
 
   listen (port, hostname = '0.0.0.0') {
@@ -46,7 +48,8 @@ export default class Server {
         (headers, [name, value]) => headers.set(name, value),
         new Headers()
       )
-    return new Request(nativeRequest.method, nativeRequest.url, headers)
+    const request = new Request(nativeRequest.method, nativeRequest.url, headers)
+    return request.set('body', this._requestBodyParser.parse(request))
   }
 
   _writeResponse (response, nativeResponse) {
