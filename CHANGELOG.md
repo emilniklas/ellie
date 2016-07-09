@@ -96,8 +96,17 @@ pipe(
 ```
 
 * Add LoggerMiddleware to the basic middleware
-* The body of a request is now available as a `body`
-  property, parsed to an object if possible.
+* The body of a request is now available as a `body` property, parsed
+  to an object if possible.
+* Uploaded files are encapsulated in a class, exposing `save` and
+  `saveWithOriginalName` methods.
+
+```javascript
+async function (request) {
+  await request.body.myFileField.saveWithOriginalName('uploads')
+  return Response.redirect(...)
+}
+```
 
 # 0.2.1
 * Bug fixes
