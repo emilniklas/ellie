@@ -60,42 +60,6 @@ You can think of it as a tree. A request is passed in through the trunk,
 and each branch returns a response or throws an error. Each junction
 or split in a branch is dictated by middleware.
 
-```
-                                   Middleware
-
-                                       +
-                                       |
-                                       v
-
-                                      +-----+
-                          Middleware  | <-+ RESPONSE
-                                      | +---+
-             Middleware       +       | |
-                              |       | |
-                 +            v       | |
-                 |                    | |
-                 v           +--------+ |
-                             |          | <--+ Middleware
-      +------------+         |          |
-     RESPONSE +->  |         |   +------+     +--------+
-      +---------+  |         |   |            | <-+ RESPONSE
-                |  |         |   |            |  +-----+
-                |  |         |   |            |  |
-                |  +---------+   +------------+  |
-                |                                |
-Middleware +--> |        Middleware              | <--+ Middleware
-                +--------+       +---------------+
-                         |       |
-                         |       |
-                         |       |
-                         |       |
-                         |       |
-                         +       +
-                            ^ +
-                    REQUEST | | RESPONSE
-                            + v
-```
-
 The implementation of a middleware can be broken down into
 steps. The middleware receives the next middleware and
 returns the function that receives the request.
