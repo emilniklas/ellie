@@ -1,5 +1,8 @@
 import HttpMessage from './HttpMessage'
 
+/**
+ * An HTTP Request message
+ */
 export default class Request extends HttpMessage {
   constructor (method, url, headers) {
     super(headers)

@@ -96,6 +96,8 @@ pipe(
 ```
 
 * Add LoggerMiddleware to the basic middleware
+* The body of a request is now available as a `body`
+  property, parsed to an object if possible.
 
 # 0.2.1
 * Bug fixes

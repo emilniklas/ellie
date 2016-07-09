@@ -1,29 +1,16 @@
 import { parse } from 'url'
+import QueryStringParser from './QueryStringParser'
 
 export default class GetRequestBodyParser {
   constructor () {
-    this._queryKeyValue = this._queryKeyValue.bind(this)
+    this._queryString = new QueryStringParser()
   }
 
-  queryString (query) {
-    return Object.assign(
-      {},
-      ...query.split('&').map(this._queryKeyValue)
-    )
-  }
-
-  _queryKeyValue (query) {
-    const [ encKey, encValue ] = query.split('=')
-    const key = decodeURIComponent(encKey)
-    const value = decodeURIComponent(encValue)
-    return { [key]: value }
-  }
-
-  parse (request) {
+  async parse (request) {
     const parsed = parse(request.url)
 
     if (!parsed.query) { return {} }
 
-    return this.queryString(parsed.query)
+    return this._queryString.parse(parsed.query)
   }
 }

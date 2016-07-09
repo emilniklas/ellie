@@ -4,7 +4,24 @@ import Headers from './Headers'
 import NoResponseError from '../../pipeline/NoResponseError'
 import RequestBodyParser from './requestBody/RequestBodyParser'
 
+/**
+ * The main HTTP server class. It uses the native NodeJS
+ * 'http' interfaces and maps them over to Ellie's own
+ * Request objects.
+ *
+ * It then sends the request through the supplied pipeline,
+ * expecting a Response object in return. It writes the response
+ * to the native response object, and ends the cycle.
+ *
+ * Simple as that.
+ */
 export default class Server {
+  /**
+   * For testing purposes, this constructor receives
+   * Node's createServer factory function in this
+   * constructor. Think of the "listenerFactory" as
+   * an alias of createServer.
+   */
   constructor (pipeline, listenerFactory) {
     this._pipeline = pipeline
     this._handler = this._handler.bind(this)
@@ -13,12 +30,25 @@ export default class Server {
     this._requestBodyParser = new RequestBodyParser()
   }
 
+  /**
+   * Starts listening to a port on the host.
+   *
+   * @param {Number} port
+   * @param {String?} hostname
+   * @returns {Promise}
+   */
   listen (port, hostname = '0.0.0.0') {
     return new Promise((resolve) => {
       this._listener.listen(port, hostname, resolve)
     })
   }
 
+  /**
+   * Adds decorators to the underlying pipeline.
+   *
+   * @param {[Object -> Response]} ...decorators
+   * @returns {Server}
+   */
   decorate (...decorators) {
     return new Server(
       this._pipeline.decorate(...decorators),
@@ -26,12 +56,20 @@ export default class Server {
     )
   }
 
+  /**
+   * Artificially sends a Request object through
+   * the pipeline, returning the response.
+   *
+   * @param {String} method
+   * @param {String} url
+   * @returns {Promise<Response>}
+   */
   request (method, url) {
     return this._pipeline.pipe(new Request(method, url))
   }
 
   async _handler (nativeRequest, nativeResponse) {
-    const request = this._parseRequest(nativeRequest)
+    const request = await this._parseRequest(nativeRequest)
     try {
       const response = await this._pipeline.pipe(request)
       this._writeResponse(response, nativeResponse)
@@ -41,7 +79,7 @@ export default class Server {
     }
   }
 
-  _parseRequest (nativeRequest) {
+  async _parseRequest (nativeRequest) {
     const headers = Object.keys(nativeRequest.headers)
       .map((name) => [ name, nativeRequest.headers[name] ])
       .reduce(
@@ -49,7 +87,7 @@ export default class Server {
         new Headers()
       )
     const request = new Request(nativeRequest.method, nativeRequest.url, headers)
-    return request.set('body', this._requestBodyParser.parse(request))
+    return request.set('body', await this._requestBodyParser.parse(request, nativeRequest))
   }
 
   _writeResponse (response, nativeResponse) {

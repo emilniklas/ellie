@@ -28,8 +28,10 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
+    "co-body": "^4.2.0",
     "eliot": "^0.1.33",
     "moment": "^2.14.1",
+    "multiparty": "^4.1.2",
     "react": "^15.2.0",
     "react-dom": "^15.2.0"
   },
